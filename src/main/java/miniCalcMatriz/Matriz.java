@@ -18,14 +18,14 @@ public class Matriz {
     private int linha;
     private int coluna;
 
-    private Fração[][] matriz;
+    private Fracao[][] matriz;
 
     public Matriz(int i, int j) {
 
         linha = i;
         coluna = j;
 
-        matriz = new Fração[linha][coluna];
+        matriz = new Fracao[linha][coluna];
 
         geraMatriz();
     }
@@ -35,13 +35,13 @@ public class Matriz {
         this(k, k);
     }
 
-    public void geraMatriz() {
+    private void geraMatriz() {
 
         for (int i = 0; i < linha; i++) {
 
             for (int j = 0; j < coluna; j++) {
 
-                matriz[i][j] = new Fração();
+                matriz[i][j] = new Fracao();
             }
         }
     }
@@ -55,7 +55,7 @@ public class Matriz {
 
                 System.out.println("["+ (i+1) + "]" + "["+ (j+1) + "] = ");
                 String f = ler.nextLine();
-                matriz[i][j] = new Fração(f);
+                matriz[i][j] = new Fracao(f);
             }
         }
 
@@ -87,7 +87,7 @@ public class Matriz {
         return s + "\n";
     }
     
-    public Matriz adição(Matriz m) {
+    public Matriz adicao(Matriz m) {
 
         Matriz nova = new Matriz(this.linha, this.coluna);
 
@@ -97,7 +97,7 @@ public class Matriz {
 
                 for (int j = 0; j < this.coluna; j++) {
 
-                    nova.matriz[i][j] = this.matriz[i][j].adição(m.matriz[i][j]);
+                    nova.matriz[i][j] = this.matriz[i][j].adicao(m.matriz[i][j]);
                 }
             }
         } else {
@@ -109,7 +109,7 @@ public class Matriz {
         return nova;
     }
 
-    public Matriz subtração(Matriz m) {
+    public Matriz subtracao(Matriz m) {
 
         Matriz nova = new Matriz(this.linha, this.coluna);
 
@@ -119,7 +119,7 @@ public class Matriz {
 
                 for (int j = 0; j < this.coluna; j++) {
 
-                    nova.matriz[i][j] = this.matriz[i][j].subtração(m.matriz[i][j]);
+                    nova.matriz[i][j] = this.matriz[i][j].subtracao(m.matriz[i][j]);
                 }
             }
         } else {
@@ -131,7 +131,7 @@ public class Matriz {
         return nova;
     }
 
-    public Matriz multiplicação(Fração f1) {
+    public Matriz multiplicacao(Fracao f1) {
 
         Matriz nova = new Matriz(this.linha, this.coluna);
 
@@ -139,14 +139,14 @@ public class Matriz {
 
             for (int j = 0; j < this.coluna; j++) {
 
-                nova.matriz[i][j] = f1.multiplicação(this.matriz[i][j]);
+                nova.matriz[i][j] = f1.multiplicacao(this.matriz[i][j]);
             }
         }
 
         return nova;
     }
     
-    public Matriz multiplicação(Matriz m) {
+    public Matriz multiplicacao(Matriz m) {
 
         Matriz nova = new Matriz(this.linha, m.coluna);
 
@@ -156,10 +156,10 @@ public class Matriz {
 
                 for (int j = 0; j < m.coluna; j++) {
 
-                    Fração soma = new Fração(0, 1);
+                    Fracao soma = new Fracao(0, 1);
 
                     for (int k = 0; k < this.coluna; k++) {
-                        soma = soma.adição(this.matriz[i][k].multiplicação(m.matriz[k][j]));
+                        soma = soma.adicao(this.matriz[i][k].multiplicacao(m.matriz[k][j]));
                     }
 
                     nova.matriz[i][j] = soma;
@@ -189,19 +189,19 @@ public class Matriz {
         return nova;
     }
 
-    public Fração determinante() {
+    public Fracao determinante() {
 
-        Fração det = new Fração(0, 1);
+        Fracao det = new Fracao(0, 1);
 
         if (this.linha == this.coluna) {
 
             if (this.linha == 2) {
 
-                det = this.matriz[0][0].multiplicação(this.matriz[1][1]).subtração((this.matriz[1][0].multiplicação(this.matriz[0][1])));
+                det = this.matriz[0][0].multiplicacao(this.matriz[1][1]).subtracao((this.matriz[1][0].multiplicacao(this.matriz[0][1])));
             } else {
 
                 Matriz nova = new Matriz(this.linha - 1);
-                Fração exp;
+                Fracao exp;
                 
                 for (int k = 0; k < this.coluna; k++) {
 
@@ -223,12 +223,12 @@ public class Matriz {
                     }
 
                     if (k % 2 == 0) {
-                        exp = new Fração(1);
+                        exp = new Fracao(1);
                     } else {
-                        exp = new Fração(-1);
+                        exp = new Fracao(-1);
                     }
 
-                    det = det.adição(this.matriz[0][k].multiplicação((exp.multiplicação(nova.determinante()))));
+                    det = det.adicao(this.matriz[0][k].multiplicacao((exp.multiplicacao(nova.determinante()))));
                 }
             }
 
@@ -253,7 +253,7 @@ public class Matriz {
 
             Matriz auxiliar = new Matriz(this.linha - 1);
 
-            Fração exp;
+            Fracao exp;
 
             for (int i = 0; i < this.linha; i++) {
 
@@ -283,12 +283,12 @@ public class Matriz {
                     }
 
                     if ((i + j) % 2 == 0) {
-                        exp = new Fração(1);
+                        exp = new Fracao(1);
                     } else {
-                        exp = new Fração(-1);
+                        exp = new Fracao(-1);
                     }
 
-                    nova.matriz[i][j] = exp.multiplicação(auxiliar.determinante());
+                    nova.matriz[i][j] = exp.multiplicacao(auxiliar.determinante());
                 }
             }
 
@@ -303,15 +303,15 @@ public class Matriz {
 
     public Matriz inversa() {
         
-        Fração det1 = this.determinante();
-        Fração det2 = new Fração(det1.getDenominador(), det1.getNumerador());
+        Fracao det1 = this.determinante();
+        Fracao det2 = new Fracao(det1.getDenominador(), det1.getNumerador());
         
-        Matriz nova = this.adjunta().multiplicação(det2);
+        Matriz nova = this.adjunta().multiplicacao(det2);
 
         return nova;
     }
     
-    public void eliminaçãoGaussiana(Matriz b, boolean pivoteamantoParcial) {
+    public void eliminacaoGaussiana(Matriz b, boolean pivoteamantoParcial) {
         for(int k = 0; k < this.linha; k++) {
 
            if(pivoteamantoParcial) {
@@ -325,17 +325,17 @@ public class Matriz {
             
             for(int i = k+1; i < this.linha; i++) {
                 
-                if(this.matriz[k][k].igual(new Fração(0))) {
+                if(this.matriz[k][k].igual(new Fracao(0))) {
                     this.trocaLinha(k, k+1);
                 }
                 
-                Fração m = this.matriz[i][k].divisão(this.matriz[k][k]);
+                Fracao m = this.matriz[i][k].divisão(this.matriz[k][k]);
 
                 for(int j = k; j < this.linha; j++) {
-                    this.matriz[i][j] = this.matriz[i][j].subtração(m.multiplicação(this.matriz[k][j]));
+                    this.matriz[i][j] = this.matriz[i][j].subtracao(m.multiplicacao(this.matriz[k][j]));
                 }
                 
-                b.matriz[i][0] = b.matriz[i][0].subtração(m.multiplicação(b.matriz[k][0]));
+                b.matriz[i][0] = b.matriz[i][0].subtracao(m.multiplicacao(b.matriz[k][0]));
             }
         }
     }
@@ -351,11 +351,11 @@ public class Matriz {
     }
     
     private int encotraPivo(int k) {
-        Fração maior = new Fração(0);
+        Fracao maior = new Fracao(0);
         int linha1 = 0;
         
         for(int i = k; i < this.linha; i++) {
-            Fração aux = this.matriz[i][k].modulo();
+            Fracao aux = this.matriz[i][k].modulo();
             
             if(aux.maior(maior)) {
                 maior = this.matriz[i][k];
@@ -366,7 +366,7 @@ public class Matriz {
         return linha1;
     }
     
-    public void decomposiçãoLU() {
+    public void decomposicaoLU() {
         Matriz l = this.criaMatrizZero(this.linha, true);
         Matriz u = this.recebeMatriz();
         
@@ -374,15 +374,15 @@ public class Matriz {
 
             for(int i = k+1; i < u.linha; i++) {
                 
-                if(u.matriz[k][k].igual(new Fração(0))) {
+                if(u.matriz[k][k].igual(new Fracao(0))) {
                     u.trocaLinha(k, k+1);
                 }
                 
-                Fração m = u.matriz[i][k].divisão(u.matriz[k][k]);
+                Fracao m = u.matriz[i][k].divisão(u.matriz[k][k]);
                 l.matriz[i][k] = m;
 
                 for(int j = k; j < u.linha; j++) {
-                    u.matriz[i][j] = u.matriz[i][j].subtração(m.multiplicação(u.matriz[k][j]));
+                    u.matriz[i][j] = u.matriz[i][j].subtracao(m.multiplicacao(u.matriz[k][j]));
                 }
             }
         }
@@ -397,12 +397,12 @@ public class Matriz {
             for(int j = 0; j < nova.coluna; j++) {
                 if(unitaria) {
                     if(i == j)
-                        nova.matriz[i][j] = new Fração(1);
+                        nova.matriz[i][j] = new Fracao(1);
                     else
-                        nova.matriz[i][j] = new Fração(0);
+                        nova.matriz[i][j] = new Fracao(0);
                 }
                 else
-                    nova.matriz[i][j] = new Fração(0);
+                    nova.matriz[i][j] = new Fracao(0);
             }
         }
         
@@ -434,7 +434,7 @@ public class Matriz {
     }
     
     public boolean positiva() {
-        if(!this.matriz[0][0].maior(new Fração(0)))
+        if(!this.matriz[0][0].maior(new Fracao(0)))
             return false;
         
         for(int k = 1; k < this.linha; k++) {
@@ -446,37 +446,37 @@ public class Matriz {
                 }
             }
             
-            if(!aux.determinante().maior(new Fração(0)))
+            if(!aux.determinante().maior(new Fracao(0)))
                 return false;
         }
         
         return true;
     }
     
-    public void decomposiçãoCholesky() {
+    public void decomposicaoCholesky() {
         if(this.simetrica() && this.positiva()) {
             Matriz g = criaMatrizZero(this.linha, false);
             
             for(int i = 0; i < this.linha; i++) {
                 for(int j = 0; j < this.coluna; j++) {
                     if(i == j) {
-                        Fração soma = new Fração(0);
+                        Fracao soma = new Fracao(0);
                         
                         for(int k = 0; k < i; k++) {
-                            soma = soma.adição(g.matriz[i][k].multiplicação(g.matriz[i][k]));
+                            soma = soma.adicao(g.matriz[i][k].multiplicacao(g.matriz[i][k]));
                         }
                         
-                        g.matriz[i][j] = (this.matriz[i][j].subtração(soma)).raiz();
+                        g.matriz[i][j] = (this.matriz[i][j].subtracao(soma)).raiz();
                     }
                     
                     else if(i > j) {
-                        Fração soma = new Fração(0);
+                        Fracao soma = new Fracao(0);
                         
                         for(int k = 0; k < j; k++) {
-                            soma = soma.adição(g.matriz[i][k].multiplicação(g.matriz[j][k]));
+                            soma = soma.adicao(g.matriz[i][k].multiplicacao(g.matriz[j][k]));
                         }
                         
-                        g.matriz[i][j] = (this.matriz[i][j].subtração(soma)).divisão(g.matriz[j][j]);
+                        g.matriz[i][j] = (this.matriz[i][j].subtracao(soma)).divisão(g.matriz[j][j]);
                     }
                 }
             }

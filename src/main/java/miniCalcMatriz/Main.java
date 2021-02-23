@@ -14,7 +14,7 @@ public class Main {
         Matriz a = new Matriz(5);
         System.out.println(a);
         
-        a.decomposiçãoLU();
+        a.decomposicaoLU();
         
     }
 }

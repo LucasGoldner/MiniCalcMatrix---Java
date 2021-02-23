@@ -13,15 +13,11 @@ import java.text.DecimalFormat;
  *
  * @author goldner
  */
-public class Fração {
-    private Scanner ler;
-    private Random gerar;
-    private DecimalFormat df;
-    
+public class Fracao {
     private double numerador;
     private double denominador;
     
-    public Fração(double n, double d) {
+    public Fracao(double n, double d) {
         double mdc = mdc(n, d);
         
         this.numerador = n / mdc;
@@ -33,15 +29,15 @@ public class Fração {
         }
     }
     
-    public Fração(double n) {
+    public Fracao(double n) {
         this(n, 1);
     }
     
-    public Fração() {
-        geraFração();
+    public Fracao() {
+        geraFracao();
     }
     
-    public Fração(String f) {
+    public Fracao(String f) {
         if(f.contains("/")) {
             double n = Integer.parseInt(f.substring(0, f.indexOf("/"))); 
             double d = Integer.parseInt(f.substring(f.indexOf("/") + 1));
@@ -74,25 +70,27 @@ public class Fração {
     
     @Override
     public String toString() {
+        DecimalFormat df;
+        
         if (this.denominador == 1 || this.numerador == 0) {
-            this.df = new DecimalFormat("####.####");
+            df = new DecimalFormat("####.####");
             return df.format(this.numerador);
         } 
         else {
-            this.df = new DecimalFormat("#.##");
+            df = new DecimalFormat("#.##");
             return df.format(this.numerador) + "/" + df.format(this.denominador);
         }
     }
     
-    public boolean igual(Fração f2) {
+    public boolean igual(Fracao f2) {
         return (this.numerador == f2.numerador) && (this.denominador == f2.denominador);
     }
     
-    public Fração modulo() {
-        return new Fração(Math.abs(this.numerador), Math.abs(this.denominador));
+    public Fracao modulo() {
+        return new Fracao(Math.abs(this.numerador), Math.abs(this.denominador));
     }
     
-    public boolean maior(Fração f2) {
+    public boolean maior(Fracao f2) {
         double d1 = this.denominador;
         double r1 = this.numerador / d1;
         
@@ -102,8 +100,8 @@ public class Fração {
         return r1 > r2;
     }
     
-    public void leFração() {
-        this.ler = new Scanner(System.in);
+    public void leFracao() {
+        Scanner ler = new Scanner(System.in);
         
         System.out.println("n = ");
         double n = ler.nextInt();
@@ -117,8 +115,8 @@ public class Fração {
         this.denominador = d / mdc;
     }
     
-    public void geraFração() {
-        this.gerar = new Random();
+    private void geraFracao() {
+        Random gerar = new Random();
         
         double n = gerar.nextInt(10);
         double d = 1;
@@ -129,39 +127,39 @@ public class Fração {
         this.denominador = d / mdc;
     }
     
-    public Fração adição(Fração f2) {
+    public Fracao adicao(Fracao f2) {
         double n = (this.numerador * f2.denominador) + (f2.numerador * this.denominador);
         double d = this.denominador * f2.denominador;
         
-        return (n == 0 || d == 0) ? new Fração(0) : new Fração(n, d);
+        return (n == 0 || d == 0) ? new Fracao(0) : new Fracao(n, d);
     }
    
-    public Fração subtração(Fração f2) {
+    public Fracao subtracao(Fracao f2) {
         double n = (this.numerador * f2.denominador) - (f2.numerador * this.denominador);
         double d = this.denominador * f2.denominador;
         
-        return (n == 0 || d == 0) ? new Fração(0) : new Fração(n, d);
+        return (n == 0 || d == 0) ? new Fracao(0) : new Fracao(n, d);
     }
     
-    public Fração multiplicação(Fração f2) {
+    public Fracao multiplicacao(Fracao f2) {
         double n = this.numerador * f2.numerador;
         double d = this.denominador * f2.denominador;
         
-        return new Fração(n, d);
+        return new Fracao(n, d);
     }
     
-    public Fração divisão(Fração f2) {
+    public Fracao divisão(Fracao f2) {
         if(f2.numerador != 0) {
             double n = this.numerador * f2.denominador;
             double d = this.denominador * f2.numerador;
 
-            return new Fração(n, d);
+            return new Fracao(n, d);
         }
         return null;
     }
 
-    public Fração raiz() {
-        return new Fração(Math.sqrt(this.numerador), Math.sqrt(this.denominador));
+    public Fracao raiz() {
+        return new Fracao(Math.sqrt(this.numerador), Math.sqrt(this.denominador));
     }
     
     public double getNumerador() {
